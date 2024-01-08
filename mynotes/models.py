@@ -18,3 +18,9 @@ class Notes(BaseModel):
     notes_title = models.CharField(max_length=50)
     notes_desc = models.TextField()
     is_done = models.BooleanField(default=False)
+
+
+class Notes_Shared(models.Model):
+    notes_id = models.ForeignKey(Notes, on_delete=models.CASCADE)
+    share_from = models.ForeignKey(User, on_delete=models.CASCADE, related_name="userr")
+    share_to = models.ForeignKey(User, on_delete=models.CASCADE)

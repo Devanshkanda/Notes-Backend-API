@@ -283,10 +283,27 @@ class NotesViewSet(viewsets.ModelViewSet):
     
 
     @action(detail=True, methods=['POST'])
-    def share(self, request):
+    def share(self, request, id):
         try:
+            user = request.user.id
+            id = id
+
             data = request.data
+
+            whoom_to_share = data.get('share_to')
+
+            Notes_Shared.objects.create(notes_id = str(id), share_to = whoom_to_share, share_from = user)
+
+            return Response({
+                'status': 200,
+                'message': "Note shared to user",
+            }, status=status.HTTP_200_OK)
 
         except Exception as e:
             print(e)
+        
+        return Response({
+            'status': 400,
+            'error': "Something went wrong"
+        }, status=status.HTTP_400_BAD_REQUEST)
     
